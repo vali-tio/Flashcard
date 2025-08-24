@@ -1,6 +1,6 @@
 {
-  "name": "Jadwal Pelajaran",
-  "short_name": "Jadwal",
+  "name": "Catatan Pintar",
+  "short_name": "Flashcard",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
