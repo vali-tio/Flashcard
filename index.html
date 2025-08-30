@@ -1,72 +1,57 @@
-<!DOCTYPE html><html lang="id"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Catatan Pintar + Flashcard (Fungsional)</title>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flashcard Belajar SMP</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="description" content="Catatan -> Flashcard -> SRS. Single-file, data lokal.">
-<style>
-:root{--bg:#0b1020;--card:#0f1830;--text:#eaf0ff;--muted:#9fb1ff;--accent:#6ea8fe;--ok:#28c281;--warn:#ffb020;--danger:#ff6e6e;--border:rgba(255,255,255,.06);--radius:12px}
-[data-theme="light"]{--bg:#f6f8ff;--card:#fff;--text:#111;--muted:#556;--accent:#3b6cff;--border:rgba(0,0,0,.08)}
-*{box-sizing:border-box} html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,var(--bg),#071025);color:var(--text)}
-.header{padding:14px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;background:rgba(0,0,0,.12);backdrop-filter:blur(6px);z-index:10}
-.logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#6ea8fe,#4f5bd5)}
-.title{font-size:18px;margin:0}
-.subtitle{font-size:12px;color:var(--muted)}
-.controls{margin-left:auto;display:flex;gap:8px;align-items:center}
-.switch{width:50px;height:28px;border-radius:999px;background:#0e1429;border:1px solid var(--border);position:relative;cursor:pointer}
-.knob{width:22px;height:22px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left .18s}
-[data-theme="light"] .switch{background:#e9ecff}[data-theme="light"] .knob{left:25px}
-.container{max-width:1100px;margin:18px auto;padding:0 12px;display:grid;grid-template-columns:1fr 420px;gap:16px}
-@media(max-width:980px){.container{grid-template-columns:1fr}}
-.card{background:var(--card);border-radius:12px;padding:12px;border:1px solid var(--border)}
-.input,textarea,select,button{font:inherit}
-.input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text)}
-[data-theme="light"] .input{background:#f7f8ff;color:var(--text)}
-textarea{min-height:96px}
-.row{display:grid;gap:8px}
-.row.cols-2{grid-template-columns:1fr 1fr}
-.row.cols-3{grid-template-columns:1fr 1fr 1fr}
-.btn{padding:8px 10px;border-radius:10px;border:0;cursor:pointer}
-.btn.primary{background:linear-gradient(180deg,#5f8bff,#4669ff);color:white}
-.btn.ghost{background:transparent;border:1px dashed var(--border);color:var(--muted)}
-.small{font-size:13px;color:var(--muted)}
-.list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-.note{padding:10px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.02);display:flex;gap:8px;align-items:flex-start}
-.meta{font-size:12px;color:var(--muted)}
-.tools{display:flex;gap:8px;flex-wrap:wrap}
-.copy{background:transparent;border:1px solid var(--border);padding:6px;border-radius:8px;cursor:pointer}
-.deck{padding:10px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.02);margin-bottom:8px}
-.cardfront{font-weight:700}
-.toast{position:fixed;right:18px;bottom:18px;padding:10px 14px;border-radius:8px;background:#111;color:white;display:none;z-index:60}
-.footer{margin-top:12px;font-size:13px;color:var(--muted)}
-
-/* review modal */
-.modal{position:fixed;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);z-index:80}
-.modal .box{width:94%;max-width:640px;background:var(--card);padding:16px;border-radius:12px;border:1px solid var(--border)}
-.rbuttons{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.rbtn{flex:1;padding:10px;border-radius:10px;border:0;cursor:pointer}
-.rbtn.again{background:#ff6e6e;color:white}
-.rbtn.good{background:#ffb56b;color:#111}
-.rbtn.easy{background:linear-gradient(180deg,#8ee08f,#28c281);color:#fff}
-.container {
-  padding-bottom: 100px; /* biar konten di main tidak ketutup footer */
-}
-
-</style>
-<script src="https://puc.poecdn.net/authenticated_preview_page/syncedState.bd4eeeb8e8e02052ee92.js"></script></head>
-<body>
-
-<header class="header">
-  <div class="logo" aria-hidden="true"></div>
-  <div>
-    <div class="title">Catatan Pintar &amp; Flashcard — Fungsional</div>
-    <div class="subtitle">Catatan → Flashcard → Latihan SRS • Data tersimpan di browser</div>
-  </div>
-  <div class="controls">
-    <div class="small">Mode</div>
-    <div class="switch" id="themeSwitch" tabindex="0"><div class="knob" id="knob"></div></div>
-  </div>
-</header>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh;
+      background-color: var(--bg); color: var(--text);
+      transition: all 0.3s;
+    }
+    :root {
+      --bg: #f4f4f4;
+      --card: #fff;
+      --text: #000;
+    }
+    .dark {
+      --bg: #121212;
+      --card: #1e1e1e;
+      --text: #f1f1f1;
+    }
+    .card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      width: 90%; max-width: 400px;
+      text-align: center;
+      min-height: 150px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .controls, .menu {
+      margin-top: 15px;
+      display: flex; gap: 10px; flex-wrap: wrap;
+      justify-content: center;
+    }
+    button {
+      padding: 8px 15px;
+      border: none; border-radius: 8px;
+      cursor: pointer;
+      background: #007bff; color: white;
+    }
+    select, input {
+      padding: 5px; border-radius: 6px;
+    }
+  </style>
+</head>
 <footer id="donateFooter">
   <span>Gratis untuk semua</span>
   <a href="https://saweria.co/valitio" target="_blank" rel="noopener noreferrer">
@@ -100,408 +85,168 @@ textarea{min-height:96px}
   }
 </style>
 
-<main class="container">
-  <!-- LEFT: Notes -->
-  <section class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <strong>Buat / Edit Catatan</strong>
-        <div class="small">Beri judul, tag, isi. Pilih lalu buat flashcard otomatis.</div>
-      </div>
-      <div class="tools">
-        <button id="importBtn" class="btn ghost">Impor JSON</button>
-        <button id="exportBtn" class="btn ghost">Ekspor JSON</button>
-      </div>
-    </div>
-
-    <div style="margin-top:10px" class="row">
-      <input id="noteTitle" class="input" placeholder="Judul (mis: Rumus Perbandingan)">
-      <input id="noteTag" class="input" placeholder="Tag / Mapel (mis: Matematika)">
-      <textarea id="noteBody" class="input" placeholder="Tulis catatan di sini..."></textarea>
-      <div style="display:flex;gap:8px">
-        <button id="saveNote" class="btn primary">Simpan</button>
-        <button id="clearNote" class="btn ghost">Bersihkan</button>
-        <button id="toFlashBtn" class="btn ghost">Buat Deck dari Catatan</button>
-      </div>
-    </div>
-
-    <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-      <input id="search" class="input" placeholder="Cari judul/tag/isi...">
-      <button id="kwBtn" class="btn ghost">Ekstrak Keyword</button>
-      <button id="copyAll" class="btn ghost">📋 Salin Ringkasan</button>
-    </div>
-
-    <div style="margin-top:12px">
-      <strong>Daftar Catatan</strong>
-      <div class="list" id="notesList"><div class="small">Belum ada catatan.</div></div>
-    </div>
-  </section>
-
-  <!-- RIGHT: Decks & Review -->
-  <aside class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div><strong>Decks &amp; Flashcards</strong><div class="small">Buat deck manual atau dari catatan</div></div>
-      <div class="tools">
-        <button id="newDeck" class="btn ghost">+ Deck</button>
-        <button id="exportDecks" class="btn ghost">Ekspor Decks</button>
-      </div>
-    </div>
-
-    <div style="margin-top:12px">
-      <div id="decksList"></div>
-    </div>
-
-    <hr style="margin:12px 0;border:none;border-top:1px dashed var(--border)">
-
-    <div>
-      <strong>Latihan (SRS)</strong>
-      <div class="small">Pilih deck, lalu tekan Review → sistem atur jadwal</div>
-      <div id="reviewArea" style="margin-top:10px"></div>
-    </div>
-
-    <div class="footer">
-      <div style="margin-top:10px" class="small">Semua data disimpan di browser (localStorage). Ekspor untuk backup.</div>
-    </div>
-  </aside>
-</main>
-
-<!-- Review modal -->
-<div id="modal" style="display:none" class="modal" aria-hidden="true">
-  <div class="box">
-    <div id="reviewCardArea"></div>
-    <div class="rbuttons">
-      <button class="rbtn again" id="btnAgain">Again</button>
-      <button class="rbtn good" id="btnGood">Good</button>
-      <button class="rbtn easy" id="btnEasy">Easy</button>
-    </div>
-    <div style="margin-top:8px;text-align:right"><button id="closeReview" class="btn ghost">Tutup</button></div>
+<body>
+  <h2>📚 Flashcard Belajar SMP</h2>
+  <div class="menu">
+    <select id="deckSelect"></select>
+    <button onclick="toggleTheme()">🌙/☀️</button>
+    <button onclick="addDeck()">➕ Mapel</button>
+    <button onclick="deleteDeck()">🗑️ Mapel</button>
+    <button onclick="importJSON()">📂 Import</button>
+    <button onclick="exportJSON()">💾 Export</button>
   </div>
-</div>
 
-<div id="toast" class="toast">Tersalin</div>
+  <div class="card" onclick="toggleAnswer()">
+    <span id="flashText">Pilih mapel dulu</span>
+  </div>
 
-<script>
-// STORAGE helpers
-const DB = {
-  get(k,d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch(e){ return d } },
-  set(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
-};
+  <div class="controls">
+    <button onclick="prevCard()">⬅️ Prev</button>
+    <button onclick="nextCard()">Next ➡️</button>
+    <button onclick="addCard()">➕ Tambah</button>
+    <button onclick="deleteCard()">🗑️ Hapus</button>
+  </div>
 
-// Data model
-// notes: [{id,title,tag,body,created,updated}]
-// decks: [{id,title,tag,cards:[{id,q,a,created,nextReview,interval,ef,lastReview}]}]
-let notes = DB.get('notes', []);
-let decks = DB.get('decks', []);
-
-// UI elements
-const noteTitle = document.getElementById('noteTitle');
-const noteTag = document.getElementById('noteTag');
-const noteBody = document.getElementById('noteBody');
-const saveNote = document.getElementById('saveNote');
-const clearNote = document.getElementById('clearNote');
-const toFlashBtn = document.getElementById('toFlashBtn');
-const notesList = document.getElementById('notesList');
-const search = document.getElementById('search');
-const kwBtn = document.getElementById('kwBtn');
-const copyAll = document.getElementById('copyAll');
-const newDeck = document.getElementById('newDeck');
-const decksList = document.getElementById('decksList');
-const reviewArea = document.getElementById('reviewArea');
-const modal = document.getElementById('modal');
-const reviewCardArea = document.getElementById('reviewCardArea');
-const btnAgain = document.getElementById('btnAgain');
-const btnGood = document.getElementById('btnGood');
-const btnEasy = document.getElementById('btnEasy');
-const closeReview = document.getElementById('closeReview');
-const toast = document.getElementById('toast');
-const importBtn = document.getElementById('importBtn');
-const exportBtn = document.getElementById('exportBtn');
-const exportDecksBtn = document.getElementById('exportDecks');
-
-// helpers
-function uid(){ return crypto.randomUUID(); }
-function now(){ return new Date().toLocaleString(); }
-function isoNow(){ return new Date().toISOString(); }
-function showToast(t, ms=1400){ toast.textContent = t; toast.style.display='block'; setTimeout(()=>toast.style.display='none', ms); }
-function saveAll(){ DB.set('notes', notes); DB.set('decks', decks); renderNotes(); renderDecks(); renderReviewArea(); }
-
-// THEME
-(function themeInit(){ const t = DB.get('theme','dark'); if(t==='light') document.documentElement.setAttribute('data-theme','light'); const sw = document.getElementById('themeSwitch'); sw.addEventListener('click', ()=>{ if(document.documentElement.hasAttribute('data-theme')){ document.documentElement.removeAttribute('data-theme'); DB.set('theme','dark'); } else { document.documentElement.setAttribute('data-theme','light'); DB.set('theme','light'); } }); })();
-
-// RENDER NOTES
-function renderNotes(filter=''){
-  const q = filter.trim().toLowerCase();
-  const list = notes.filter(n=> !q || (n.title + ' ' + n.tag + ' ' + n.body).toLowerCase().includes(q));
-  if(!list.length){ notesList.innerHTML = '<div class="small">Belum ada catatan.</div>'; return; }
-  notesList.innerHTML = list.map(n=> `
-    <div class="note" data-id="${n.id}">
-      <div style="flex:1">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <strong>${escapeHTML(n.title || 'Tanpa Judul')}</strong>
-            <div class="meta">${n.tag? '#'+escapeHTML(n.tag): ''} • ${new Date(n.created).toLocaleDateString()}</div>
-          </div>
-          <div style="display:flex;gap:8px">
-            <button class="copy" data-copy="${escapeAttr(n.title+'\\n'+n.body)}">📋</button>
-            <button class="copy" data-toflash="${n.id}" title="Buat deck dari catatan">➕</button>
-          </div>
-        </div>
-        <div style="margin-top:8px">${escapeHTML(n.body).replace(/\\n/g,'<br>')}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-left:8px">
-        <button class="btn ghost" data-edit="${n.id}">Edit</button>
-        <button class="btn ghost" data-del="${n.id}">Hapus</button>
-      </div>
-    </div>
-  `).join('');
-  // attach events
-  notesList.querySelectorAll('[data-del]').forEach(b=> b.onclick = ()=>{ const id=b.getAttribute('data-del'); if(!confirm('Hapus catatan?')) return; notes = notes.filter(x=>x.id!==id); saveAll(); showToast('Catatan dihapus'); });
-  notesList.querySelectorAll('[data-edit]').forEach(b=> b.onclick = ()=>{ const id=b.getAttribute('data-edit'); const n = notes.find(x=>x.id===id); if(n){ noteTitle.value = n.title; noteTag.value = n.tag; noteBody.value = n.body; saveNote.dataset.edit = id; window.scrollTo({top:0,behavior:'smooth'}); } });
-  notesList.querySelectorAll('[data-copy]').forEach(b=> b.onclick = async ()=>{ const txt = b.getAttribute('data-copy'); try{ await navigator.clipboard.writeText(txt); showToast('Tersalin'); }catch(e){ alert('Gagal salin: '+txt); } });
-  notesList.querySelectorAll('[data-toflash]').forEach(b=> b.onclick = ()=> createDeckFromNote(b.getAttribute('data-toflash')));
-}
-
-// SAVE NOTE
-saveNote.addEventListener('click', ()=>{
-  const t = noteTitle.value.trim(); const tag = noteTag.value.trim(); const body = noteBody.value.trim();
-  if(!t && !body){ return alert('Isi judul atau catatan'); }
-  if(saveNote.dataset.edit){
-    const id = saveNote.dataset.edit; const idx = notes.findIndex(x=>x.id===id);
-    if(idx>=0){ notes[idx].title = t; notes[idx].tag = tag; notes[idx].body = body; notes[idx].updated = Date.now(); showToast('Catatan diperbarui'); }
-    delete saveNote.dataset.edit;
-  } else {
-    notes.unshift({ id: uid(), title: t, tag: tag, body: body, created: Date.now() });
-    showToast('Catatan tersimpan');
-  }
-  noteTitle.value=''; noteTag.value=''; noteBody.value='';
-  saveAll();
-});
-
-clearNote.addEventListener('click', ()=>{ if(confirm('Bersihkan input?')){ noteTitle.value=''; noteTag.value=''; noteBody.value=''; delete saveNote.dataset.edit; } });
-
-// SEARCH
-search.addEventListener('input', ()=> renderNotes(search.value));
-
-// KEYWORD EXTRACT (simple TF)
-kwBtn.addEventListener('click', ()=>{
-  const text = (noteTitle.value + ' ' + noteBody.value).trim();
-  if(!text) return alert('Tulis catatan/draft untuk ekstrak keyword');
-  const kw = extractKeywords(text, 6);
-  prompt('Keyword teratas (salin):', kw.join(', '));
-});
-
-function extractKeywords(text, topN=5){
-  const stop = new Set(['yang','dan','dari','dengan','untuk','pada','adalah','atau','di','ke','sebagai','ini','itu','saat','oleh','lebih','mereka','kami','saya','yang','itu','ini']);
-  const words = text.toLowerCase().replace(/[^a-z0-9\u00C0-\u017F\s]/gi,' ').split(/\s+/).filter(w=>w && w.length>2 && !stop.has(w));
-  const freq = {}; for(const w of words) freq[w] = (freq[w]||0)+1;
-  return Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,topN).map(x=>x[0]);
-}
-
-// CREATE DECK FROM NOTE (auto)
-function createDeckFromNote(noteId){
-  const n = notes.find(x=>x.id===noteId); if(!n) return alert('Catatan tidak ditemukan');
-  const title = prompt('Judul deck', n.title || ('Deck dari '+(n.tag||'Catatan'))); if(!title) return;
-  const lines = n.body.split(/\n+/).map(s=>s.trim()).filter(Boolean);
-  const cards = [];
-  for(const ln of lines){
-    if(ln.includes(':')){
-      const [left,...rest] = ln.split(':'); const q = left.trim(); const a = rest.join(':').trim();
-      if(q && a) cards.push({ id: uid(), q, a, created: Date.now(), nextReview: Date.now(), interval:0, ef:2.5 });
-    } else if(ln.length>30){
-      const q = ln.split('. ')[0] + '?'; const a = ln;
-      cards.push({ id: uid(), q, a, created: Date.now(), nextReview: Date.now(), interval:0, ef:2.5 });
-    }
-  }
-  if(!cards.length){
-    if(!confirm('Tidak ada pola Q:A otomatis. Buat satu kartu manual?')) return;
-    const q = prompt('Pertanyaan (front)'); const a = prompt('Jawaban (back)'); if(!q||!a) return; cards.push({ id: uid(), q, a, created: Date.now(), nextReview: Date.now(), interval:0, ef:2.5 });
-  }
-  decks.unshift({ id: uid(), title, tag: n.tag||'', cards });
-  saveAll(); showToast('Deck dibuat dari catatan');
-}
-
-// NEW DECK
-newDeck.addEventListener('click', ()=>{
-  const title = prompt('Judul deck baru'); if(!title) return;
-  decks.unshift({ id: uid(), title, tag:'', cards:[] }); saveAll(); renderDecks(); openEditDeck(0);
-});
-
-function renderDecks(){
-  if(!decks.length){ decksList.innerHTML = '<div class="small">Belum ada deck.</div>'; return; }
-  decksList.innerHTML = decks.map((d, i)=> `
-    <div class="deck">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <strong>${escapeHTML(d.title)}</strong><div class="small">${d.tag? '#'+escapeHTML(d.tag):''} • ${d.cards.length} kartu</div>
-        </div>
-        <div style="display:flex;gap:6px">
-          <button class="btn ghost" data-edit="${i}">Edit</button>
-          <button class="btn ghost" data-review="${i}">Review</button>
-          <button class="btn ghost" data-export="${i}">Ekspor</button>
-          <button class="btn ghost" data-delete="${i}">Hapus</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-  decksList.querySelectorAll('[data-delete]').forEach(b=> b.onclick = ()=>{ const i=parseInt(b.getAttribute('data-delete')); if(!confirm('Hapus deck ini?')) return; decks.splice(i,1); saveAll(); showToast('Deck dihapus'); });
-  decksList.querySelectorAll('[data-edit]').forEach(b=> b.onclick = ()=>{ const i=parseInt(b.getAttribute('data-edit')); openEditDeck(i); });
-  decksList.querySelectorAll('[data-review]').forEach(b=> b.onclick = ()=>{ const i=parseInt(b.getAttribute('data-review')); openReview(i); });
-  decksList.querySelectorAll('[data-export]').forEach(b=> b.onclick = async ()=>{ const i=parseInt(b.getAttribute('data-export')); const txt = JSON.stringify(decks[i], null, 2); try{ await navigator.clipboard.writeText(txt); showToast('Deck disalin (JSON)'); }catch(e){ alert('Salin manual:\\n'+txt); } });
-}
-
-// OPEN EDIT DECK (simple editor)
-function openEditDeck(idx){
-  const d = decks[idx]; if(!d) return;
-  const newTitle = prompt('Judul deck', d.title); if(newTitle===null) return;
-  d.title = newTitle; const add = confirm('Tambah kartu baru? (OK = ya)'); if(add){ const q = prompt('Pertanyaan'); const a = prompt('Jawaban'); if(q && a) d.cards.push({ id: uid(), q, a, created: Date.now(), nextReview: Date.now(), interval:0, ef:2.5 }); }
-  saveAll(); renderDecks(); showToast('Deck diperbarui');
-}
-
-// Review scheduler: gather due cards from a deck (nextReview <= now)
-let reviewQueue = []; let reviewDeckIdx = null; let reviewPos = 0;
-function openReview(deckIdx){
-  const d = decks[deckIdx]; if(!d || !d.cards.length) return alert('Deck kosong');
-  const due = d.cards.filter(c=> !c.nextReview || new Date(c.nextReview) <= new Date());
-  if(!due.length) return alert('Tidak ada kartu yang perlu review hari ini');
-  reviewQueue = due.slice();
-  reviewDeckIdx = deckIdx; reviewPos = 0; showReviewCard();
-}
-
-// show review modal
-function showReviewCard(){
-  modal.style.display = 'flex'; modal.removeAttribute('aria-hidden');
-  renderSingleCard();
-}
-
-function renderSingleCard(){
-  if(reviewPos >= reviewQueue.length){ alert('Selesai sesi review'); modal.style.display='none'; saveAll(); return; }
-  const c = reviewQueue[reviewPos];
-  reviewCardArea.innerHTML = `<div style="font-size:14px;color:var(--muted)">Soal ${reviewPos+1} / ${reviewQueue.length}</div><div style="margin-top:8px"><div class="cardfront">${escapeHTML(c.q)}</div><div id="answerArea" style="margin-top:12px;display:none"><div style="padding:10px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.02)">${escapeHTML(c.a)}</div></div></div><div style="margin-top:10px"><button id="showAns" class="btn primary">Tampilkan Jawaban</button></div>`;
-  document.getElementById('showAns').onclick = ()=>{ document.getElementById('answerArea').style.display='block'; };
-}
-
-btnAgain.onclick = ()=> gradeCurrent(0);
-btnGood.onclick = ()=> gradeCurrent(1);
-btnEasy.onclick = ()=> gradeCurrent(2);
-closeReview.onclick = ()=> { modal.style.display='none'; modal.setAttribute('aria-hidden','true'); saveAll(); };
-
-function gradeCurrent(g){
-  const c = reviewQueue[reviewPos]; if(!c) return;
-  const deck = decks[reviewDeckIdx]; const realCard = deck.cards.find(x=>x.id===c.id);
-  if(!realCard){ reviewPos++; return renderSingleCard(); }
-  // simple SRS behaviour
-  if(g===0){ realCard.interval = 0; realCard.nextReview = new Date(Date.now() + 24*3600*1000).toISOString(); }
-  else if(g===1){ realCard.interval = (realCard.interval||0) + 1; realCard.nextReview = new Date(Date.now() + realCard.interval*24*3600*1000).toISOString(); }
-  else { realCard.interval = (realCard.interval||0) + 3; realCard.nextReview = new Date(Date.now() + realCard.interval*24*3600*1000).toISOString(); }
-  realCard.lastReview = isoNow();
-  saveAll();
-  reviewPos++; if(reviewPos < reviewQueue.length) renderSingleCard(); else { alert('Selesai sesi review'); modal.style.display='none'; saveAll(); }
-}
-
-// REVIEW AREA (list decks with due count)
-function renderReviewArea(){
-  const rows = decks.map((d,i)=>{ const due = d.cards.filter(c=> !c.nextReview || new Date(c.nextReview) <= new Date()).length; return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div><strong>${escapeHTML(d.title)}</strong><div class="small">${d.cards.length} kartu</div></div><div style="display:flex;gap:6px"><button class="btn ghost" data-review="${i}">Review (${due})</button><button class="btn ghost" data-open="${i}">Buka</button></div></div>` }).join('');
-  reviewArea.innerHTML = rows || '<div class="small">Belum ada deck.</div>';
-  reviewArea.querySelectorAll('[data-review]').forEach(b=> b.onclick = ()=> openReview(parseInt(b.getAttribute('data-review'))));
-  reviewArea.querySelectorAll('[data-open]').forEach(b=> b.onclick = ()=> openDeckView(parseInt(b.getAttribute('data-open'))));
-}
-
-// deck view details popup (simple prompt/editor)
-function openDeckView(idx){
-  const d = decks[idx]; if(!d) return;
-  let msg = `Deck: ${d.title}\nKartu: ${d.cards.length}\n\n` + d.cards.map((c,i)=>`${i+1}. Q: ${c.q}\n   A: ${c.a}\n`).join('\n');
-  const action = prompt(msg + '\nKetik: "add" untuk tambah, "del N" untuk hapus nomor, "close" untuk keluar');
-  if(!action) return;
-  if(action.trim().toLowerCase() === 'add'){ const q = prompt('Pertanyaan'); const a = prompt('Jawaban'); if(q && a){ d.cards.push({ id: uid(), q, a, created: Date.now(), nextReview: Date.now(), interval:0, ef:2.5 }); saveAll(); showToast('Kartu ditambahkan'); } }
-  else if(action.trim().toLowerCase().startsWith('del')){ const parts = action.split(' '); const n = parseInt(parts[1]); if(n>0 && n<=d.cards.length){ if(confirm('Hapus kartu '+n+'?')){ d.cards.splice(n-1,1); saveAll(); renderDecks(); showToast('Kartu dihapus'); } } }
-}
-
-// EXPORT / IMPORT app data JSON
-exportBtn.addEventListener('click', ()=>{
-  const data = { notes, decks, exportedAt: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
-  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'catatan_flashcard_backup_'+(new Date().toISOString().slice(0,10))+'.json'; a.click(); URL.revokeObjectURL(url);
-});
-
-// ***** BAGIAN INI DIPERBAIKI AGAR SUPPORT SEMUA BROWSER *****
-  importBtn.addEventListener('click', ()=>{
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'application/json';
-  input.style.display = 'none'; // tetap tersembunyi
-
-  document.body.appendChild(input); // HARUS masuk DOM!
-
-  input.onchange = () => {
-    const f = input.files[0];
-    if (!f) {
-      document.body.removeChild(input);
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const obj = JSON.parse(reader.result);
-
-        // Lebih fleksibel: bisa full data, hanya notes, atau hanya decks
-        if (obj.notes || obj.decks) {
-          notes = obj.notes ?? [];
-          decks = obj.decks ?? [];
-        } else if (Array.isArray(obj) && obj.length && obj[0].title !== undefined) {
-          notes = obj;
-        } else if (Array.isArray(obj) && obj.length && obj[0].cards !== undefined) {
-          decks = obj;
-        } else {
-          throw new Error("Format tidak dikenali");
-        }
-
-        saveAll();
-        showToast('Data diimpor');
-      } catch (e) {
-        alert('File JSON tidak valid: ' + e.message);
-      }
-      document.body.removeChild(input); // Hapus setelah selesai
+  <script>
+    let data = {
+      "IPA": [
+        {q: "Apa persamaan umum fotosintesis?", a: "6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂"},
+        {q: "Apa bunyi Hukum Newton II?", a: "ΣF = m × a"},
+      ],
+      "Matematika": [
+        {q: "Rumus keliling lingkaran?", a: "K = 2 × π × r"},
+        {q: "Teorema Pythagoras?", a: "a² + b² = c²"}
+      ]
     };
-    reader.readAsText(f);
-  };
 
-  input.click();
-});
-// ***** END OF FIXED PART *****
+    let deck = [], deckName = null, index = 0, showAnswer = false;
 
-exportDecksBtn.addEventListener('click', async ()=>{
-  if(!decks.length) return alert('Tidak ada deck'); const txt = JSON.stringify(decks, null, 2);
-  try{ await navigator.clipboard.writeText(txt); showToast('Semua deck disalin ke clipboard (JSON)'); }catch(e){ alert('Salin manual:\\n'+txt); }
-});
+    function init() {
+      const sel = document.getElementById("deckSelect");
+      sel.innerHTML = "<option disabled selected>Pilih Mapel</option>";
+      Object.keys(data).forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name; opt.textContent = name;
+        sel.appendChild(opt);
+      });
+      sel.onchange = () => selectDeck(sel.value);
+    }
 
-// copy summary
-copyAll.addEventListener('click', async ()=>{
-  const summary = notes.map(n=> `${n.title} (${n.tag})\n${n.body.slice(0,140)}...`).join('\n\n');
-  try{ await navigator.clipboard.writeText(summary); showToast('Ringkasan disalin'); }catch(e){ alert('Gagal salin'); }
-});
+    function selectDeck(name) {
+      deckName = name;
+      deck = data[name];
+      index = 0; showAnswer = false;
+      render();
+    }
 
-// helper for escaping
-function escapeHTML(s){
-  if(!s) return '';
-  return s.replace(/[&<>"'`]/g, c=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;',
-    '`':'&#96;'
-  }[c]));
-}
-function escapeAttr(s){ return (s||'').replace(/"/g,'&quot;'); }
+    function render() {
+      if (!deckName || deck.length === 0) {
+        document.getElementById("flashText").textContent = "Belum ada kartu di mapel ini";
+        return;
+      }
+      const card = deck[index];
+      document.getElementById("flashText").textContent = 
+        showAnswer ? card.a : card.q;
+    }
 
-// initialize render
-renderNotes();
-renderDecks();
-renderReviewArea();
-    if ("serviceWorker" in navigator) {
+    function toggleAnswer() {
+      if (!deckName) return;
+      showAnswer = !showAnswer;
+      render();
+    }
+
+    function nextCard() {
+      if (!deckName || deck.length === 0) return;
+      index = (index+1) % deck.length;
+      showAnswer = false;
+      render();
+    }
+
+    function prevCard() {
+      if (!deckName || deck.length === 0) return;
+      index = (index-1+deck.length) % deck.length;
+      showAnswer = false;
+      render();
+    }
+
+    function addCard() {
+      if (!deckName) return alert("Pilih mapel dulu!");
+      const q = prompt("Masukkan pertanyaan:");
+      const a = prompt("Masukkan jawaban:");
+      if(q && a) deck.push({q,a});
+      render();
+    }
+
+    function deleteCard() {
+      if (!deckName || deck.length === 0) return;
+      if(confirm("Hapus kartu ini?")) {
+        deck.splice(index,1);
+        index = Math.max(0, index-1);
+        render();
+      }
+    }
+
+    function addDeck() {
+      const name = prompt("Masukkan nama mapel baru:");
+      if (name && !data[name]) {
+        data[name] = [];
+        init();
+        alert("Mapel '" + name + "' berhasil ditambahkan!");
+      } else if (data[name]) {
+        alert("Mapel sudah ada!");
+      }
+    }
+
+    function deleteDeck() {
+      if (!deckName) return alert("Pilih mapel dulu!");
+      if (confirm("Hapus mapel '" + deckName + "' beserta semua kartunya?")) {
+        delete data[deckName];
+        deckName = null;
+        deck = [];
+        init();
+        document.getElementById("flashText").textContent = "Pilih mapel dulu";
+      }
+    }
+
+    function importJSON() {
+      const fileInput = document.createElement("input");
+      fileInput.type = "file"; fileInput.accept = "application/json";
+      fileInput.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            data = JSON.parse(reader.result);
+            init();
+            alert("Import berhasil!");
+          } catch {
+            alert("File tidak valid!");
+          }
+        };
+        reader.readAsText(file);
+      };
+      fileInput.click();
+    }
+
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "flashcards.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+    }
+
+    init();
+      if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("service-worker.js")
         .then(() => console.log("Service Worker registered"))
         .catch(err => console.error("SW registration failed:", err));
     }
   </script>
-</body></html>
+</body>
+</html>
